@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panda Peek – you've been challenged!</title>
+<meta name="description" content="Solve the same panda puzzle faster than your friend.">
+<meta property="og:title" content="⚔️ Panda Peek challenge">
+<meta property="og:description" content="Can you solve this panda puzzle faster than your friend?">
+<meta property="og:image" content="https://iristrav.github.io/pandapeek/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+         background: linear-gradient(#e4f2d6, #cfe8bb); color: #3b2f22; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .card { background: #fffaf0; border-radius: 28px; padding: 28px 24px 24px; max-width: 380px; width: 100%; text-align: center;
+          box-shadow: 0 6px 0 #c9b68f, 0 18px 40px rgba(80, 60, 30, .15); }
+  img { width: 112px; height: 112px; border-radius: 26px; box-shadow: 0 4px 14px rgba(0,0,0,.15); }
+  h1 { font-size: 26px; margin: 18px 0 6px; }
+  .what { font-size: 17px; color: #7a6650; margin: 0 0 14px; }
+  .time { display: inline-block; background: #fff3d6; color: #9a5b12; border: 2px solid #f0c770; border-radius: 14px;
+          font-size: 28px; font-weight: 800; padding: 6px 18px; margin-bottom: 22px; }
+  .btn { display: block; text-decoration: none; font-weight: 800; font-size: 19px; border-radius: 18px; padding: 15px; margin: 10px 0 0; }
+  .open { background: #5bb544; color: #fff; box-shadow: 0 5px 0 #3f8a2d; }
+  .get { background: #fff; color: #3f8a2d; border: 2px solid #b9dca9; font-size: 16px; }
+  .small { font-size: 13px; color: #9b8a72; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <img src="icon.png" alt="Panda Peek">
+  <h1 id="title">You've been challenged!</h1>
+  <p class="what" id="what">Panda Peek</p>
+  <div class="time" id="time" hidden></div>
+  <a class="btn open" id="open" href="pandapeek://challenge">Play in Panda Peek</a>
+  <a class="btn get" id="get" href="https://apps.apple.com/app/id6834095996">Get Panda Peek</a>
+  <p class="small" id="hint">Already have the app? Tap “Play”. Otherwise get it first, then open this link again.</p>
+</div>
+<script>
+(function () {
+  var L = {
+    en: ["{n} challenges you!", "Level {l}", "the Daily puzzle", "Time to beat", "Play in Panda Peek", "Get Panda Peek", "Already have the app? Tap “Play”. Otherwise get it first, then open this link again.", "You've been challenged!"],
+    nl: ["{n} daagt je uit!", "Level {l}", "de dagelijkse puzzel", "Tijd om te verslaan", "Speel in Panda Peek", "Download Panda Peek", "Heb je de app al? Tik op “Speel”. Anders download je hem eerst en open je deze link opnieuw.", "Je bent uitgedaagd!"],
+    de: ["{n} fordert dich heraus!", "Level {l}", "das Tagesrätsel", "Zu schlagende Zeit", "In Panda Peek spielen", "Panda Peek holen", "Hast du die App schon? Tippe auf „Spielen“. Sonst lade sie zuerst und öffne diesen Link erneut.", "Du wurdest herausgefordert!"],
+    fr: ["{n} te défie !", "Niveau {l}", "le puzzle du jour", "Temps à battre", "Jouer dans Panda Peek", "Obtenir Panda Peek", "Tu as déjà l’app ? Touche « Jouer ». Sinon, installe-la puis rouvre ce lien.", "Tu as été défié !"],
+    es: ["¡{n} te reta!", "Nivel {l}", "el puzle diario", "Tiempo a superar", "Jugar en Panda Peek", "Descargar Panda Peek", "¿Ya tienes la app? Toca «Jugar». Si no, descárgala y vuelve a abrir este enlace.", "¡Te han retado!"],
+    pt: ["{n} te desafiou!", "Nível {l}", "o quebra-cabeça diário", "Tempo a bater", "Jogar no Panda Peek", "Baixar Panda Peek", "Já tem o app? Toque em “Jogar”. Senão, baixe-o e abra este link de novo.", "Você foi desafiado!"],
+    it: ["{n} ti sfida!", "Livello {l}", "il puzzle del giorno", "Tempo da battere", "Gioca su Panda Peek", "Scarica Panda Peek", "Hai già l’app? Tocca “Gioca”. Altrimenti scaricala e riapri questo link.", "Sei stato sfidato!"],
+    pl: ["{n} rzuca Ci wyzwanie!", "Poziom {l}", "codzienną łamigłówkę", "Czas do pobicia", "Graj w Panda Peek", "Pobierz Panda Peek", "Masz już aplikację? Stuknij „Graj”. Jeśli nie, pobierz ją i otwórz ten link ponownie.", "Masz wyzwanie!"],
+    tr: ["{n} sana meydan okuyor!", "Seviye {l}", "günlük bulmaca", "Geçilecek süre", "Panda Peek'te oyna", "Panda Peek'i indir", "Uygulama sende var mı? “Oyna”ya dokun. Yoksa önce indir, sonra bu bağlantıyı tekrar aç.", "Sana meydan okundu!"],
+    ru: ["{n} бросает тебе вызов!", "Уровень {l}", "ежедневная головоломка", "Время, которое нужно побить", "Играть в Panda Peek", "Скачать Panda Peek", "Приложение уже есть? Нажми «Играть». Если нет — скачай его и открой ссылку снова.", "Тебе бросили вызов!"],
+    ja: ["{n}からの挑戦！", "レベル{l}", "デイリーパズル", "このタイムに勝とう", "Panda Peekでプレイ", "Panda Peekを入手", "アプリをお持ちなら「プレイ」をタップ。まだなら入手してから、このリンクをもう一度開いてください。", "挑戦状が届きました！"],
+    ko: ["{n}님의 도전장!", "레벨 {l}", "오늘의 퍼즐", "이겨야 할 기록", "Panda Peek에서 플레이", "Panda Peek 받기", "앱이 있다면 “플레이”를 누르세요. 없다면 먼저 받은 뒤 이 링크를 다시 여세요.", "도전장이 도착했어요!"],
+    zh: ["{n}向你发起挑战！", "第{l}关", "每日谜题", "要打败的时间", "在 Panda Peek 中玩", "获取 Panda Peek", "已经有应用了？点“玩”。没有的话先下载，再重新打开这个链接。", "你收到了挑战！"]
+  };
+  var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
+  var T = L[lang] || L.en;
+  document.documentElement.lang = L[lang] ? lang : 'en';
+
+  var q = new URLSearchParams(location.search);
+  var l = parseInt(q.get('l'), 10) || 0, d = parseInt(q.get('d'), 10) || 0, t = parseInt(q.get('t'), 10) || 0;
+  var n = (q.get('n') || '').replace(/[<>]/g, '').trim().slice(0, 16);
+
+  function fmt(tenths) { var s = tenths / 10, m = Math.floor(s / 60), r = (s - m * 60).toFixed(1); return m + ':' + (r < 10 ? '0' : '') + r; }
+  function set(id, text) { document.getElementById(id).textContent = text; }
+
+  set('title', n ? T[0].replace('{n}', n) : T[7]);
+  set('open', T[4]); set('get', T[5]); set('hint', T[6]);
+  if (d) set('what', T[2]); else if (l) set('what', T[1].replace('{l}', l));
+  if (t > 0) { var el = document.getElementById('time'); el.textContent = '⏱ ' + fmt(t); el.title = T[3]; el.hidden = false; }
+
+  var params = [];
+  if (d) params.push('d=' + d); else if (l) params.push('l=' + l);
+  if (t > 0) params.push('t=' + t);
+  if (n) params.push('n=' + encodeURIComponent(n));
+  var appUrl = 'pandapeek://challenge' + (params.length ? '?' + params.join('&') : '');
+  document.getElementById('open').href = appUrl;
+
+  // try to open the app straight away (iPhone asks "Open in Panda Peek?")
+  if ((l || d) && /iPhone|iPad|Android/i.test(navigator.userAgent)) setTimeout(function () { location.href = appUrl; }, 400);
+})();
+</script>
+</body>
+</html>

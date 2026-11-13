@@ -79,8 +79,6 @@
   var appUrl = 'pandapeek://challenge' + (params.length ? '?' + params.join('&') : '');
   document.getElementById('open').href = appUrl;
 
-  // try to open the app straight away (iPhone asks "Open in Panda Peek?")
-  if ((l || d) && /iPhone|iPad|Android/i.test(navigator.userAgent)) setTimeout(function () { location.href = appUrl; }, 400);
 })();
 </script>
 </body>
